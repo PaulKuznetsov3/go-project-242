@@ -5,6 +5,7 @@ import (
     "log"
     "os"
     "context"
+    "math"
     "path/filepath"
     "github.com/urfave/cli/v3"
 )
@@ -50,14 +51,51 @@ func GetSize(path string) (int64, error) {
 	return size, nil
 }
 
+/** Функция форманирования размера файла. */
+func FormatSize(size int64) (string) {
+    /** Формат размеров. */
+    sizes := []string{"B", "KB", "MB", "GB", "TB", "PB", "EB"}
+
+    /** Итоговый результат. */
+    var resultSize string
+
+    /** Делитель. */
+    var divider int64 = 1024
+    for _, s := range sizes {
+	    if size < divider {
+            resultSize = fmt.Sprintf("%.1f%s", math.Floor(float64(size)), s)
+            return resultSize
+        } else {
+           size = size / divider
+        }
+
+	}
+    
+    return resultSize
+}
+
+
 /** Точка входа в приложение. */
 func main() {
     cmd := &cli.Command{
         Name:  "hexlet-path-size",
         Usage: "print size of a file or directory",
+        Flags: []cli.Flag{
+            &cli.BoolFlag{
+                Name:  "human",
+                Aliases: []string{"H"},
+                Usage: "human-readable sizes",
+            },
+        },
         Action: func(ctx context.Context, cmd *cli.Command) error {
         path := cmd.Args().First()
      
+        /** Последний елемент пути к файлу или директории. */
+        last := filepath.Base(path)
+
+        /** Итоговый результат после форматирования. */
+        var resultSize string
+
         if path == "" {
             fmt.Println("Пожалуйста, укажите путь к файлу или директории")
             return nil
@@ -70,11 +108,14 @@ func main() {
             return err
         }
 
-        /** Последний елемент пути к файлу или директории. */
-        last := filepath.Base(path)
-        
-        fmt.Print(size,"B\\t", last)
+        if cmd.Bool("human") {
+           resultSize =  FormatSize(size)
+            fmt.Print(resultSize,"\\t", last)
             return nil
+        }
+
+        fmt.Print(size,"B\\t", last)
+        return nil
         },
     }
 
