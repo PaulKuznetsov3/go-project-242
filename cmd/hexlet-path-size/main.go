@@ -5,6 +5,7 @@ import (
     "log"
     "os"
     "context"
+    "strings"
     "math"
     "path/filepath"
     "github.com/urfave/cli/v3"
@@ -22,9 +23,10 @@ func checkError(err error, path string) {
 }
 
 /** Функция вычисляющая размер файла или верхнего уровня директории. */
-func GetSize(path string) (int64, error) {
+func GetSize(path string, all bool) (int64, error) {
     /** Итоговый размер файла. */
     var size int64
+    
  
 	fileInfo, err := os.Lstat(path)
     checkError(err, path)
@@ -36,6 +38,13 @@ func GetSize(path string) (int64, error) {
 	    }
 
 	    for _, file := range files {
+            fileName := file.Name()
+            isHidden := strings.HasPrefix(fileName, ".")
+
+            if !all && isHidden {
+                continue
+            }
+
 		    fullpath :=  fmt.Sprint(path,"/",file.Name())
             fileInfo, err := os.Lstat(fullpath)
 
@@ -86,6 +95,11 @@ func main() {
                 Aliases: []string{"H"},
                 Usage: "human-readable sizes",
             },
+                &cli.BoolFlag{
+                Name:  "all",
+                Aliases: []string{"a"},
+                Usage: "include hidden files and directories",
+            },
         },
         Action: func(ctx context.Context, cmd *cli.Command) error {
         path := cmd.Args().First()
@@ -101,7 +115,7 @@ func main() {
             return nil
         }
         
-        size, err := GetSize(path)
+        size, err := GetSize(path, cmd.Bool("all"))
 
         if err != nil {
             log.Printf("Ошибка: %v\n", err)
