@@ -8,9 +8,9 @@
 The program scans all files and folders in the specified location and sums their sizes.
 
 ### Flags:
---human -H - human-readable sizes
---all -a - include hidden files and directories
---recursive -r - recursive size of directories
+--human -H - human-readable sizes  
+--all -a - include hidden files and directories  
+--recursive -r - recursive size of directories  
 
 ## system requirements: 
 go version go1.26.1 linux/amd64
