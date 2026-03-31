@@ -8,7 +8,7 @@ import (
 )
 
 /** Функция вычисляющая размер файла или верхнего уровня директории. */
-func GetSize(path string, all bool, recursive bool) (int64, error) {
+func GetPathSize(path string, all bool, recursive bool) (int64, error) {
     /** Итоговый размер файла. */
     var size int64
     
@@ -35,7 +35,7 @@ func GetSize(path string, all bool, recursive bool) (int64, error) {
 		    fullpath :=  fmt.Sprint(path,"/",file.Name())
 
             if fileInfo.IsDir() && recursive {
-             dirSize, err := GetSize(fullpath, all, recursive)
+             dirSize, err := GetPathSize(fullpath, all, recursive)
                 if err != nil {
                     return 0, err
                 }

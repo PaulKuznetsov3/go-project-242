@@ -5,7 +5,7 @@ import (
 )
 
 func TestGetSize(t *testing.T) {
-	got, err := GetSize("./testdata/testFile.txt", false, false)
+	got, err := GetPathSize("./testdata/testFile.txt", false, false)
 	if err != nil {
 		t.Fatalf("GetSize(file) error = %v", err)
 	}
@@ -17,7 +17,7 @@ func TestGetSize(t *testing.T) {
 }
 
 func TestGetSizeFlagAll(t *testing.T) {
-	got, err := GetSize("./testdata", true, false)
+	got, err := GetPathSize("./testdata", true, false)
 	if err != nil {
 		t.Fatalf("GetSize(file) error = %v", err)
 	}
@@ -28,7 +28,7 @@ func TestGetSizeFlagAll(t *testing.T) {
 	}
 }
 func TestGetSizeFlagRecursive(t *testing.T) {
-	got, err := GetSize("./testdata", false, true)
+	got, err := GetPathSize("./testdata", false, true)
 	if err != nil {
 		t.Fatalf("GetSize(file) error = %v", err)
 	}
@@ -40,7 +40,7 @@ func TestGetSizeFlagRecursive(t *testing.T) {
 }
 
 func TestGetSizeError(t *testing.T) {
-    _, err := GetSize("./test", false, true)
+    _, err := GetPathSize("./test", false, true)
     
     if err == nil {
         t.Fatal("ожидали ошибку, но получили nil")
