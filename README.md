@@ -13,7 +13,7 @@ The program scans all files and folders in the specified location and sums their
 --recursive -r - recursive size of directories  
 
 ## system requirements: 
-go version go1.26.1 linux/amd64
+go version go1.26 linux/amd64
 
 ## Install:
   - clone a repository git@github.com:PaulKuznetsov3/frontend-project-46.git
