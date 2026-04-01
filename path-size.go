@@ -47,13 +47,16 @@ func getSize(path string, all, recursive bool) (int64, error) {
                 return 0, err
             }
 
-            if currentfileInfo.IsDir() && recursive {
-              dirSize, err := getSize(fullpath, all, recursive)
-                if err != nil {
-                    return 0, err
+            if currentfileInfo.IsDir() {
+                if recursive {
+                    dirSize, err := getSize(fullpath, all, recursive)
+                    if err != nil {
+                        return 0, err
+                    }
+                    size += dirSize
                 }
-                size += dirSize
-            } else if !currentfileInfo.IsDir() {
+              
+            } else {
                 size += currentfileInfo.Size()
             }
 	    }
