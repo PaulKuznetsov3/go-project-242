@@ -41,28 +41,20 @@ func main() {
         /** Последний елемент пути к файлу или директории. */
         last := filepath.Base(path)
 
-        /** Итоговый результат после форматирования. */
-        var resultSize string
-
         if path == "" {
             fmt.Println("Пожалуйста, укажите путь к файлу или директории")
             return nil
         }
         
-        size, err := code.GetPathSize(path, cmd.Bool("all"), cmd.Bool("recursive"))
+        size, err :=  code.GetPathSize(path, cmd.Bool("human"), cmd.Bool("all"), cmd.Bool("recursive"))
 
         if err != nil {
             return err
         }
 
-        if cmd.Bool("human") {
-           resultSize =  code.FormatSize(size)
-            fmt.Print(resultSize,"\\t", last)
-            return nil
-        }
-
-        fmt.Print(size,"B\\t", last)
+        fmt.Print(size,"\\t", last)
         return nil
+        
         },
     }
 
