@@ -48,7 +48,7 @@ func main() {
             return err
         }
 
-        fmt.Print(size,"\\t", path)
+        fmt.Printf("%s\t%s\n", size, path)
         return nil
         
         },
