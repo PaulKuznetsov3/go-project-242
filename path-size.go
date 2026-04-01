@@ -53,7 +53,7 @@ func getSize(path string, all bool, recursive bool) (int64, error) {
                     return 0, err
                 }
                 size += dirSize
-            } else {
+            } else if !currentfileInfo.IsDir() {
                 size += currentfileInfo.Size()
             }
 	    }

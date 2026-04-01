@@ -22,7 +22,7 @@ func TestGetSizeFlagAll(t *testing.T) {
 		t.Fatalf("GetSize(file) error = %v", err)
 	}
 
-	want := int64(11267)
+	want := int64(7171)
 	if got != want {
 		t.Fatalf("GetSize(file) = %d, want %d", got, want)
 	}
