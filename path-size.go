@@ -4,6 +4,7 @@ import (
     "fmt"
     "os"
     "strings"
+    "path/filepath"
 )
 
 func GetPathSize(path string, human, all, recursive bool) (string, error) {
@@ -38,7 +39,7 @@ func getSize(path string, all bool, recursive bool) (int64, error) {
                 continue
             }
 
-		    fullpath :=  fmt.Sprint(path,"/",file.Name())
+		    fullpath := filepath.Join(path, file.Name())
 
             currentfileInfo, err := os.Lstat(fullpath)
 
@@ -78,7 +79,7 @@ func formatSize(size int64, human bool) (string) {
     var divider int64 = 1024
     
     if !human {
-        return fmt.Sprintf("%.1f%s", float64(size), sizes[defaultIndex])
+        return fmt.Sprintf("%d%s", size, sizes[defaultIndex])
     }
   
     for i, s := range sizes {

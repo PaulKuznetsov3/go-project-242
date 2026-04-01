@@ -6,7 +6,6 @@ import (
     "os"
     "context"
     "code"
-    "path/filepath"
     "github.com/urfave/cli/v3"
 )
 
@@ -37,9 +36,6 @@ func main() {
         },
         Action: func(ctx context.Context, cmd *cli.Command) error {
         path := cmd.Args().First()
-     
-        /** Последний елемент пути к файлу или директории. */
-        last := filepath.Base(path)
 
         if path == "" {
             fmt.Println("Пожалуйста, укажите путь к файлу или директории")
@@ -52,7 +48,7 @@ func main() {
             return err
         }
 
-        fmt.Print(size,"\\t", last)
+        fmt.Print(size,"\\t", path)
         return nil
         
         },
