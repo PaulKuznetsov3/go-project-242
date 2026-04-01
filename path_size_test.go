@@ -53,8 +53,8 @@ func TestGetSizeError(t *testing.T) {
 }
 
 func TestFormatSize(t *testing.T) {
-	got := formatSize(1024, true)
-	want := "1.0KB"
+	got := formatSize(2048, true)
+	want := "2.0KB"
 	if got != want {
 		t.Fatalf("FormatSize(size) = %s, want %s", got, want)
 	}
