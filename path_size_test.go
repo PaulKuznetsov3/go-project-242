@@ -33,7 +33,7 @@ func TestGetSizeFlagRecursive(t *testing.T) {
 		t.Fatalf("GetSize(file) error = %v", err)
 	}
 
-	want := int64(12056)
+	want := int64(7960)
 	if got != want {
 		t.Fatalf("GetSize(file) = %d, want %d", got, want)
 	}
