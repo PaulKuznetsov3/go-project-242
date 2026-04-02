@@ -7,7 +7,7 @@ import (
     "path/filepath"
 )
 
-func GetPathSize(path string, human, all, recursive bool) (string, error) {
+func GetPathSize(path string, recursive, human, all bool) (string, error) {
 	size, err := getSize(path, all, recursive )
 	if err != nil {
 		return "", err
@@ -16,7 +16,7 @@ func GetPathSize(path string, human, all, recursive bool) (string, error) {
 }
 
 /** Функция вычисляющая размер файла или верхнего уровня директории. */
-func getSize(path string, all, recursive bool) (int64, error) {
+func getSize(path string, recursive, all bool) (int64, error) {
     /** Итоговый размер файла. */
     var size int64
 
