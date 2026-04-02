@@ -70,21 +70,25 @@ func getSize(path string, all, recursive bool) (int64, error) {
 
 /** Функция форманирования размера файла. */
 func formatSize(size int64, human bool) string {
+    /** Размерность.*/
+	sizes := []string{"B", "KB", "MB", "GB", "TB", "PB", "EB"}
+    /** Шаг деления. */
+	const step = 1024.0
+    /** Размер в формате float64. */
+    currentSize := float64(size)
+    
 	if !human {
 		return fmt.Sprintf("%dB", size)
 	}
-	const step = 1024.0
-	sizes := []string{"B", "KB", "MB", "GB", "TB", "PB", "EB"}
-
-	val := float64(size)
+ 
 	i := 0
-	for val >= step && i < len(sizes)-1 {
-		val /= step
+	for currentSize >= step && i < len(sizes)-1 {
+		currentSize /= step
 		i++
 	}
 
 	if i == 0 {
-		return fmt.Sprintf("%d%s", int64(val), sizes[i])
+		return fmt.Sprintf("%d%s", int64(currentSize), sizes[i])
 	}
-	return fmt.Sprintf("%.1f%s", val, sizes[i])
+	return fmt.Sprintf("%.1f%s", currentSize, sizes[i])
 }
