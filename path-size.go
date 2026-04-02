@@ -54,7 +54,7 @@ func getSize(path string, recursive, all bool) (int64, error) {
         }
 
         if recursive {
-            dirSize, err := getSize(fullpath, all, recursive)
+            dirSize, err := getSize(fullpath, recursive, all)
             if err != nil {
                 return 0, err
             }
