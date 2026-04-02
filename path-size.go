@@ -18,55 +18,53 @@ func GetPathSize(path string, human, all, recursive bool) (string, error) {
 /** Функция вычисляющая размер файла или верхнего уровня директории. */
 func getSize(path string, all, recursive bool) (int64, error) {
     /** Итоговый размер файла. */
-    var size int64 
- 
-	fileInfo, err := os.Lstat(path)
-      if err != nil {
-		    return  0, err 
-	    }
+    var size int64
 
-    if fileInfo.IsDir() {
-        files, err := os.ReadDir(path)
-	    if err != nil {
-		    return  0, err 
-	    }
+    fileInfo, err := os.Lstat(path)
+    if err != nil {
+        return 0, err
+    }
 
-	    for _, file := range files {
-            fileName := file.Name()
-            isHidden := strings.HasPrefix(fileName, ".")
+    if !fileInfo.IsDir() {
+        return fileInfo.Size(), nil
+    }
 
-            if !all && isHidden {
-                continue
-            }
+    files, err := os.ReadDir(path)
+    if err != nil {
+        return 0, err
+    }
 
-		    fullpath := filepath.Join(path, file.Name())
+    for _, file := range files {
+        fileName := file.Name()
+        isHidden := strings.HasPrefix(fileName, ".")
 
-            currentfileInfo, err := os.Lstat(fullpath)
+        if !all && isHidden {
+            continue
+        }
 
+        fullpath := filepath.Join(path, file.Name())
+
+        if !file.IsDir() {
+            fileInfo, err := os.Lstat(fullpath)
             if err != nil {
                 return 0, err
             }
+            size += fileInfo.Size()
+            continue
+        }
 
-            if currentfileInfo.IsDir() {
-                if recursive {
-                    dirSize, err := getSize(fullpath, all, recursive)
-                    if err != nil {
-                        return 0, err
-                    }
-                    size += dirSize
-                }
-              
-            } else {
-                size += currentfileInfo.Size()
+        if recursive {
+            dirSize, err := getSize(fullpath, all, recursive)
+            if err != nil {
+                return 0, err
             }
-	    }
-
-    } else {
-        size = fileInfo.Size()
+            size += dirSize
+        }
     }
 
-	return size, nil
+    return size, nil
 }
+
 
 /** Функция форманирования размера файла. */
 func formatSize(size int64, human bool) string {
