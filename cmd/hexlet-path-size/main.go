@@ -38,7 +38,10 @@ func main() {
         path := cmd.Args().First()
 
         if path == "" {
-            cli.ShowAppHelp(cmd)
+            err := cli.ShowAppHelp(cmd)
+            if err != nil {
+                return err
+            }
             return nil
         }
         
