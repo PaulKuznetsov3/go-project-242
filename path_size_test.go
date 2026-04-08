@@ -27,6 +27,19 @@ func TestGetSizeFlagAll(t *testing.T) {
 		t.Fatalf("GetSize(file) = %d, want %d", got, want)
 	}
 }
+
+func TestGetSizeFlagNotAll(t *testing.T) {
+	got, err := getSize("./testdata", false, false)
+	if err != nil {
+		t.Fatalf("GetSize(file) error = %v", err)
+	}
+
+	want := int64(5442)
+	if got != want {
+		t.Fatalf("GetSize(file) = %d, want %d", got, want)
+	}
+}
+
 func TestGetSizeFlagRecursive(t *testing.T) {
 	got, err := getSize("./testdata", true, false)
 	if err != nil {
@@ -52,9 +65,37 @@ func TestGetSizeError(t *testing.T) {
     }
 }
 
-func TestFormatSize(t *testing.T) {
+func TestGetSizeEmptyDir(t *testing.T) {
+  	got, err := getSize("./testdata/testEmpty", true, false)
+	if err != nil {
+		t.Fatalf("GetSize(file) error = %v", err)
+	}
+
+	want := int64(0)
+	if got != want {
+		t.Fatalf("GetSize(file) = %d, want %d", got, want)
+	}
+}
+
+func TestFormatSizeKB(t *testing.T) {
 	got := formatSize(2048, true)
 	want := "2.0KB"
+	if got != want {
+		t.Fatalf("FormatSize(size) = %s, want %s", got, want)
+	}
+}
+
+func TestFormatSizeMB(t *testing.T) {
+	got := formatSize(2097152, true)
+	want := "2.0MB"
+	if got != want {
+		t.Fatalf("FormatSize(size) = %s, want %s", got, want)
+	}
+}
+
+func TestFormatSizeGB(t *testing.T) {
+	got := formatSize(2147483648, true)
+	want := "2.0GB"
 	if got != want {
 		t.Fatalf("FormatSize(size) = %s, want %s", got, want)
 	}

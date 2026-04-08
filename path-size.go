@@ -10,7 +10,7 @@ import (
 func GetPathSize(path string, recursive, human, all bool) (string, error) {
 	size, err := getSize(path, recursive, all )
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("error processing %s: %v", path, err) 
 	}
 	return formatSize(size, human), nil
 }
@@ -66,27 +66,41 @@ func getSize(path string, recursive, all bool) (int64, error) {
 }
 
 
-/** Функция форманирования размера файла. */
+/** Функция форматирования размера файла. */
 func formatSize(size int64, human bool) string {
-    /** Размерность.*/
-	sizes := []string{"B", "KB", "MB", "GB", "TB", "PB", "EB"}
-    /** Шаг деления. */
-	const step = 1024.0
-    /** Размер в формате float64. */
-    currentSize := float64(size)
-    
-	if !human {
-		return fmt.Sprintf("%dB", size)
-	}
- 
-	i := 0
-	for currentSize >= step && i < len(sizes)-1 {
-		currentSize /= step
-		i++
-	}
 
-	if i == 0 {
-		return fmt.Sprintf("%d%s", int64(currentSize), sizes[i])
-	}
-	return fmt.Sprintf("%.1f%s", currentSize, sizes[i])
+    currentSize := float64(size)
+
+    const step = 1024.0
+
+    const (
+        KB = step
+        MB = step * KB
+        GB = step * MB
+        TB = step * GB
+        PB = step * TB
+        EB = step * PB
+    )
+
+    if !human {
+        return fmt.Sprintf("%dB", size)
+    }
+
+   
+    switch {
+    case currentSize < KB:
+        return fmt.Sprintf("%d%s", int64(currentSize), "B")
+    case currentSize < MB:
+        return fmt.Sprintf("%.1f%s", currentSize/KB, "KB")
+    case currentSize < GB:
+        return fmt.Sprintf("%.1f%s", currentSize/MB, "MB")
+    case currentSize < TB:
+        return fmt.Sprintf("%.1f%s", currentSize/GB, "GB")
+    case currentSize < PB:
+        return fmt.Sprintf("%.1f%s", currentSize/TB, "TB")
+    case currentSize < EB:
+        return fmt.Sprintf("%.1f%s", currentSize/PB, "PB")
+    default:
+        return fmt.Sprintf("%.1f%s", currentSize/EB, "EB")
+    }
 }

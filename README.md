@@ -16,7 +16,7 @@ The program scans all files and folders in the specified location and sums their
 go version go1.26 linux/amd64
 
 ## Install:
-  - clone a repository git@github.com:PaulKuznetsov3/frontend-project-46.git
+  - clone a repository git@github.com:PaulKuznetsov3/go-project-242.git
 
 ### Example of work:
 [![asciicast](https://asciinema.org/a/DTAI6iQsfvtZMoSh7TBGRfrgk.svg)](https://asciinema.org/a/DTAI6iQsfvtZMoSh7TBGRfrgk)

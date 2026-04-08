@@ -38,7 +38,7 @@ func main() {
         path := cmd.Args().First()
 
         if path == "" {
-            fmt.Println("Пожалуйста, укажите путь к файлу или директории")
+            cli.ShowAppHelp(cmd)
             return nil
         }
         
